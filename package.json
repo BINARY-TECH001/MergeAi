@@ -1,0 +1,154 @@
+{
+  "name": "mergeai",
+  "displayName": "MergeAI — AI-Powered Merge Conflict Resolution",
+  "description": "Context-aware, AI-powered Git merge conflict resolution with validation",
+  "version": "1.0.0",
+  "publisher": "mergeai",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other",
+    "SCM Providers"
+  ],
+  "keywords": [
+    "git",
+    "merge",
+    "conflict",
+    "ai",
+    "resolution"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onCommand:mergeai.resolveConflict",
+    "onCommand:mergeai.resolveAllConflicts",
+    "onCommand:mergeai.configure",
+    "onLanguage:typescript",
+    "onLanguage:typescriptreact",
+    "onLanguage:javascript",
+    "onLanguage:javascriptreact"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "mergeai.resolveConflict",
+        "title": "MergeAI: Resolve Conflict"
+      },
+      {
+        "command": "mergeai.resolveAllConflicts",
+        "title": "MergeAI: Resolve All Conflicts in File"
+      },
+      {
+        "command": "mergeai.resolveAllConflictsInWorkspace",
+        "title": "MergeAI: Resolve All Conflicts in Workspace"
+      },
+      {
+        "command": "mergeai.configure",
+        "title": "MergeAI: Configure AI Provider"
+      }
+    ],
+    "configuration": {
+      "title": "MergeAI",
+      "properties": {
+        "mergeai.aiProvider": {
+          "type": "string",
+          "default": "openai",
+          "enum": [
+            "openai",
+            "anthropic",
+            "custom"
+          ],
+          "description": "AI provider for merge resolution"
+        },
+        "mergeai.apiEndpoint": {
+          "type": "string",
+          "default": "",
+          "description": "Custom API endpoint (for 'custom' provider)"
+        },
+        "mergeai.model": {
+          "type": "string",
+          "default": "gpt-4o",
+          "description": "Model to use for merge resolution"
+        },
+        "mergeai.contextDepth": {
+          "type": "number",
+          "default": 2,
+          "minimum": 1,
+          "maximum": 5,
+          "description": "Depth of dependency resolution (1-5)"
+        },
+        "mergeai.enableValidation": {
+          "type": "boolean",
+          "default": true,
+          "description": "Run TypeScript/ESLint validation after resolution"
+        },
+        "mergeai.enableCodeLens": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show inline 'AI Resolve' buttons on conflicts"
+        },
+        "mergeai.confirmBeforeApply": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show diff preview before applying resolution"
+        },
+        "mergeai.warnBeforeSending": {
+          "type": "boolean",
+          "default": true,
+          "description": "Warn before sending code to external AI"
+        }
+      }
+    },
+    "viewsContainers": {
+      "activity": [
+        {
+          "id": "mergeai-view",
+          "title": "MergeAI",
+          "icon": "$(git-merge)"
+        }
+      ]
+    },
+    "views": {
+      "mergeai-view": [
+        {
+          "id": "mergeai-commands",
+          "name": "Commands"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "mergeai.resolveConflict",
+        "key": "ctrl+shift+m",
+        "mac": "cmd+shift+m",
+        "when": "editorTextFocus"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTests.js",
+    "test:unit": "mocha --ui tdd ./out/test/unit/**/*.test.js",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "@vscode/test-electron": "^2.3.9",
+    "@vscode/vsce": "^2.22.0",
+    "eslint": "^8.56.0",
+    "mocha": "^10.3.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "ts-morph": "^22.0.0"
+  }
+}
