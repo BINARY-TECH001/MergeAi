@@ -20,9 +20,6 @@
   ],
   "activationEvents": [
     "onStartupFinished",
-    "onCommand:mergeai.resolveConflict",
-    "onCommand:mergeai.resolveAllConflicts",
-    "onCommand:mergeai.configure",
     "onLanguage:typescript",
     "onLanguage:typescriptreact",
     "onLanguage:javascript",
@@ -101,11 +98,11 @@
       }
     },
     "viewsContainers": {
-      "activity": [
+      "activitybar": [
         {
           "id": "mergeai-view",
           "title": "MergeAI",
-          "icon": "$(git-merge)"
+          "icon": "media/mergeai.svg"
         }
       ]
     },
@@ -113,7 +110,9 @@
       "mergeai-view": [
         {
           "id": "mergeai-commands",
-          "name": "Commands"
+          "name": "Commands",
+          "type": "tree",
+          "icon": "media/mergeai.svg"
         }
       ]
     },
