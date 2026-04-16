@@ -5,7 +5,8 @@
 import * as vscode from 'vscode';
 import { resolveAllConflicts, applyResolution } from '../core/mergeEngine';
 import { getAIConfig } from '../core/secrets';
-import { showStrategyPicker, showCustomInstructionInput } from '../ui/quickPick';
+import { showStrategyPicker } from '../ui/quickPick';
+import { CustomInstructionPanelProvider } from '../ui/customInstructionPanel';
 
 export async function executeResolveAllConflicts(): Promise<void> {
   const editor = vscode.window.activeTextEditor;
@@ -20,7 +21,7 @@ export async function executeResolveAllConflicts(): Promise<void> {
 
     let customInstruction: string | undefined;
     if (strategy === 'custom') {
-      customInstruction = await showCustomInstructionInput();
+      customInstruction = await CustomInstructionPanelProvider.promptForInstruction();
       if (customInstruction === undefined) return;
     }
 

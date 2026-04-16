@@ -11,6 +11,7 @@ import { executeResolveAllConflictsInWorkspace } from './commands/resolveAllConf
 import { executeConfigure } from './commands/configure';
 import { MergeAICodeLensProvider } from './ui/codeLens';
 import { MergeAIViewProvider } from './ui/sidebar';
+import { CustomInstructionPanelProvider } from './ui/customInstructionPanel';
 import { initSecretStorage } from './core/secrets';
 
 export function activate(context: vscode.ExtensionContext): void {
@@ -26,29 +27,25 @@ export function activate(context: vscode.ExtensionContext): void {
   );
 
   // Register CodeLens provider for all supported languages
-  const languages = [
-    { language: 'typescript' },
-    { language: 'typescriptreact' },
-    { language: 'javascript' },
-    { language: 'javascriptreact' },
-    { language: 'json' },
-    { language: 'css' },
-    { language: 'html' },
-    { language: 'markdown' },
-    { language: 'yaml' },
-  ];
-
   const codeLensProvider = new MergeAICodeLensProvider();
-  for (const selector of languages) {
-    context.subscriptions.push(
-      vscode.languages.registerCodeLensProvider(selector, codeLensProvider)
-    );
-  }
+  context.subscriptions.push(
+    vscode.languages.registerCodeLensProvider({ scheme: 'file' }, codeLensProvider)
+  );
 
   // Register sidebar view provider
   const sidebarProvider = new MergeAIViewProvider();
   context.subscriptions.push(
     vscode.window.registerTreeDataProvider('mergeai-commands', sidebarProvider)
+  );
+
+  const customInstructionProvider = new CustomInstructionPanelProvider();
+  CustomInstructionPanelProvider.setInstance(customInstructionProvider);
+  context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider(
+      CustomInstructionPanelProvider.viewType,
+      customInstructionProvider,
+      { webviewOptions: { retainContextWhenHidden: true } }
+    )
   );
 
   console.log('MergeAI extension activated');

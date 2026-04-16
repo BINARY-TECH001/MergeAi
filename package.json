@@ -113,6 +113,11 @@
           "name": "Commands",
           "type": "tree",
           "icon": "media/mergeai.svg"
+        },
+        {
+          "id": "mergeai-custom-instruction",
+          "name": "Custom Instruction",
+          "icon": "media/mergeai.svg"
         }
       ]
     },
