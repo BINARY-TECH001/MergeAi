@@ -43,6 +43,10 @@
       {
         "command": "mergeai.configure",
         "title": "MergeAI: Configure AI Provider"
+      },
+      {
+        "command": "mergeai.openSettings",
+        "title": "MergeAI: Open Settings Dashboard"
       }
     ],
     "configuration": {
@@ -54,6 +58,7 @@
           "enum": [
             "openai",
             "anthropic",
+            "gemini",
             "custom"
           ],
           "description": "AI provider for merge resolution"
@@ -117,6 +122,7 @@
         {
           "id": "mergeai-custom-instruction",
           "name": "Custom Instruction",
+          "type": "webview",
           "icon": "media/mergeai.svg"
         }
       ]

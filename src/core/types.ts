@@ -99,7 +99,7 @@ export interface ValidationWarning {
 }
 
 export interface AIProviderConfig {
-  provider: 'openai' | 'anthropic' | 'custom';
+  provider: 'openai' | 'anthropic' | 'gemini' | 'custom';
   apiKey: string;
   model: string;
   endpoint?: string;

@@ -50,7 +50,14 @@ export class MergeAIViewProvider implements vscode.TreeDataProvider<MergeAITreeI
           '$(gear)',
           vscode.TreeItemCollapsibleState.None,
           'mergeai.configure',
-          'Set up AI provider (OpenAI, Anthropic, Custom)'
+          'Set up AI provider (OpenAI, Anthropic, Gemini, Custom)'
+        ),
+        new MergeAITreeItem(
+          'Open Settings Dashboard',
+          '$(settings-gear)',
+          vscode.TreeItemCollapsibleState.None,
+          'mergeai.openSettings',
+          'Manage provider, model, endpoint, and API keys in one view'
         ),
       ]);
     }

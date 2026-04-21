@@ -14,6 +14,7 @@ export async function executeConfigure(): Promise<void> {
     [
       { label: 'OpenAI', description: 'GPT-4o, GPT-4, etc.', value: 'openai' },
       { label: 'Anthropic', description: 'Claude 3.5, Claude 3, etc.', value: 'anthropic' },
+      { label: 'Google Gemini', description: 'Gemini 2.5 Pro/Flash, etc.', value: 'gemini' },
       { label: 'Custom', description: 'Any OpenAI-compatible endpoint', value: 'custom' },
     ],
     {
@@ -27,11 +28,17 @@ export async function executeConfigure(): Promise<void> {
   // Update provider setting
   await config.update('aiProvider', provider.value, vscode.ConfigurationTarget.Global);
 
-  // Custom endpoint
-  if (provider.value === 'custom') {
+  // Optional endpoint override for custom/gemini
+  if (provider.value === 'custom' || provider.value === 'gemini') {
     const endpoint = await vscode.window.showInputBox({
-      prompt: 'Enter the API endpoint URL',
-      placeHolder: 'https://api.example.com/v1/chat/completions',
+      prompt:
+        provider.value === 'custom'
+          ? 'Enter the API endpoint URL'
+          : 'Optional: Enter a Gemini endpoint URL override',
+      placeHolder:
+        provider.value === 'custom'
+          ? 'https://api.example.com/v1/chat/completions'
+          : 'Leave empty to use Google default endpoint',
       value: config.get<string>('apiEndpoint', ''),
     });
     if (endpoint !== undefined) {
@@ -43,6 +50,7 @@ export async function executeConfigure(): Promise<void> {
   const defaultModels: Record<string, string> = {
     openai: 'gpt-4o',
     anthropic: 'claude-sonnet-4-20250514',
+    gemini: 'gemini-2.5-pro',
     custom: 'gpt-4o',
   };
 

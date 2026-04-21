@@ -9,6 +9,7 @@ import { executeResolveConflict } from './commands/resolveConflict';
 import { executeResolveAllConflicts } from './commands/resolveAllConflicts';
 import { executeResolveAllConflictsInWorkspace } from './commands/resolveAllConflictsInWorkspace';
 import { executeConfigure } from './commands/configure';
+import { executeOpenSettings } from './commands/openSettings';
 import { MergeAICodeLensProvider } from './ui/codeLens';
 import { MergeAIViewProvider } from './ui/sidebar';
 import { CustomInstructionPanelProvider } from './ui/customInstructionPanel';
@@ -23,7 +24,8 @@ export function activate(context: vscode.ExtensionContext): void {
     vscode.commands.registerCommand('mergeai.resolveConflict', executeResolveConflict),
     vscode.commands.registerCommand('mergeai.resolveAllConflicts', executeResolveAllConflicts),
     vscode.commands.registerCommand('mergeai.resolveAllConflictsInWorkspace', executeResolveAllConflictsInWorkspace),
-    vscode.commands.registerCommand('mergeai.configure', executeConfigure)
+    vscode.commands.registerCommand('mergeai.configure', executeConfigure),
+    vscode.commands.registerCommand('mergeai.openSettings', executeOpenSettings)
   );
 
   // Register CodeLens provider for all supported languages

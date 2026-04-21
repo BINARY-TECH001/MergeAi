@@ -1,7 +1,7 @@
 /**
  * AI integration engine for merge conflict resolution.
  *
- * Supports OpenAI, Anthropic, and custom API endpoints.
+ * Supports OpenAI, Anthropic, Gemini, and custom API endpoints.
  * Constructs context-rich prompts and parses structured responses.
  */
 
@@ -212,6 +212,33 @@ async function callAI(
       });
       break;
     }
+
+    case 'gemini': {
+      const defaultUrl = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(
+        model
+      )}:generateContent?key=${encodeURIComponent(apiKey)}`;
+      url = endpoint || defaultUrl;
+      headers = {
+        'Content-Type': 'application/json',
+      };
+      body = JSON.stringify({
+        systemInstruction: {
+          parts: [{ text: systemPrompt }],
+        },
+        contents: [
+          {
+            role: 'user',
+            parts: [{ text: userPrompt }],
+          },
+        ],
+        generationConfig: {
+          temperature: 0.2,
+          maxOutputTokens: 4096,
+          responseMimeType: 'application/json',
+        },
+      });
+      break;
+    }
   }
 
   const responseText = await httpRequest(url, 'POST', headers, body);
@@ -228,6 +255,15 @@ function extractContent(responseText: string, provider: string): string {
     const block = parsed.content?.[0];
     if (block?.type === 'text') return block.text;
     throw new Error('Unexpected Anthropic response format');
+  }
+
+  if (provider === 'gemini') {
+    const text = parsed.candidates?.[0]?.content?.parts
+      ?.map((p: { text?: string }) => p.text ?? '')
+      .join('')
+      .trim();
+    if (text) return text;
+    throw new Error('Unexpected Gemini response format');
   }
 
   // OpenAI / custom
